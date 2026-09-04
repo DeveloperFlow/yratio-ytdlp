@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 import yt_dlp
+import requests
 
 app = FastAPI()
 
