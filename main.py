@@ -7,12 +7,14 @@ app = FastAPI()
 @app.get("/extract")
 def extract_url(url: str):
     ydl_opts = {
-        'extract_flat': True
+        'extract_flat': True,
+        'skip_download': True
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            return {"status": "success", "url": info.get("url")}
+            return info
+            #return {"status": "success", "url": info.get("url")}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
