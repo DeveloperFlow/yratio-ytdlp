@@ -8,6 +8,7 @@ app = FastAPI()
 def extract_url(url: str):
     ydl_opts = {
         'extract_flat': True,
+        'impersonate': 'chrome',
         'skip_download': True
     }
     try:
