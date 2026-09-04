@@ -8,7 +8,7 @@ app = FastAPI()
 def extract_url(url: str):
     ydl_opts = {
         'extract_flat': True,
-        'impersonate': 'chrome',
+        'impersonate': 'chrome:windows',
         'extractor_args': {
             'instagram': {
                 'embed': ['true']
