@@ -9,15 +9,20 @@ def extract_url(url: str):
     ydl_opts = {
         'extract_flat': True,
         'impersonate': 'chrome',
+        'extractor_args': {
+            'instagram': {
+                'embed': ['true']
+            }
+        },
         'skip_download': True
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            return info
-            #return {"status": "success", "url": info.get("url")}
+            return {"status": "success", "info": info}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        error_msg = str(e) or repr(e) or traceback.format_exc()
+        raise HTTPException(status_code=400, detail=error_msg)
 
 @app.get("/test")
 def test(url: str):
