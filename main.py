@@ -29,7 +29,6 @@ def extract_url(url: str):
     ydl_opts = {
         'http_headers': HEADERS,
         'extract_flat': True,
-        'impersonate': 'chrome:windows',
         'extractor_args': {
             'instagram': {
                 'embed': ['true']
