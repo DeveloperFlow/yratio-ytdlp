@@ -97,10 +97,11 @@ def getProxyList() -> list:
     return proxies
 
 def pickProxy():
-    pool = getProxyList()
+    return "http://tvz9kjec2y2m:i73lfsjaxxgo6fl@45.3.53.7:3129"
+    """pool = getProxyList()
     if len( pool ) > 0:
         return random.choice( pool )
-    return None
+    return None"""
 
 def calcPoolExpiration( pool ):
     poolLen = len( pool["proxies"] )
