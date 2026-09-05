@@ -1,5 +1,5 @@
 import yt_dlp
-from utils import pickProxy, getRecommendedHeaders
+from src.utils import pickProxy, getRecommendedHeaders
 
 def extractVideoURL( url: str ):
     headers = getRecommendedHeaders()
