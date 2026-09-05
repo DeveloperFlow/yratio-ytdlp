@@ -7,14 +7,14 @@ def extractVideoURL( url: str, request: Request):
     options = {
         'http_headers': headers,
         'extract_flat': True,
-        'extractor_args': {
+        """'extractor_args': {
             'instagram': {
                 'embed': ['true']
             },
             'youtube': {
                 'player_client': ['mweb', 'android', 'web']
             }
-        },
+        },"""
         'skip_download': True
     }
     proxy = pickProxy()
