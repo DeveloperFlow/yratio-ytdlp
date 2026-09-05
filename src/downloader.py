@@ -15,11 +15,13 @@ def extractVideoURL( url: str, request: Request):
                 'player_client': ['mweb', 'android', 'web']
             }
         },
-        "socket_timeout": 120,
         'skip_download': True
     }
     proxy = pickProxy()
     if proxy:
         options["proxy"] = proxy
-    with yt_dlp.YoutubeDL(options) as ydl:
-        return {"resp": ydl.extract_info(url, download=False)}
+    try:
+        with yt_dlp.YoutubeDL(options) as ydl:
+            return {"result": ydl.extract_info(url, download=False), "proxy": proxy, "headers": headers}
+    except Exception as e:
+        return {"headers": headers, "proxy": proxy}
