@@ -10,6 +10,9 @@ def extractVideoURL( url: str, request: Request):
         'extractor_args': {
             'instagram': {
                 'embed': ['true']
+            },
+            'youtube': {
+                'player_client': ['mweb', 'android', 'web']
             }
         },
         'skip_download': True
