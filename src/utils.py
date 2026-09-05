@@ -19,6 +19,8 @@ def getRecommendedHeaders( url: str, request: Request ) -> dict:
         "Accept-Language": "en-US,en;q=0.9",
         "Authorization": "",
         "Host": targetHost,
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
         "Sec-Ch-Ua": '"Chromium";v="152", "Not?A_Brand";v="24", "Google Chrome";v="152"',
         "Sec-Ch-Ua-Mobile": "?0",
         "Sec-Ch-Ua-Platform": '"Windows"',
@@ -31,7 +33,8 @@ def getRecommendedHeaders( url: str, request: Request ) -> dict:
         "X-Forwarded-Proto": "https"
     }
     if referer:
-        headers["Referer"] = referer
+        pass
+        #headers["Referer"] = referer
     if clientIP: 
         headers["X-Real-Ip"] = clientIP
         headers["X-Forwarded-For"] = clientIP
