@@ -24,4 +24,4 @@ def extractVideoURL( url: str, request: Request):
         with yt_dlp.YoutubeDL(options) as ydl:
             return {"result": ydl.extract_info(url, download=False), "proxy": proxy, "headers": headers}
     except Exception as e:
-        return {"headers": headers, "proxy": proxy}
+        return {"headers": headers, "proxy": proxy, "error": e}

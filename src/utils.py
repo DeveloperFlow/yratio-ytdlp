@@ -52,6 +52,7 @@ def getRecommendedHeaders( url: str, request: Request ) -> dict:
         
     if platform == "youtube":
         headers = headers | youtubeHeaders
+        del headers["X-Forwarded-Proto"]
     return dict( sorted( headers.items() ) )
     
 def getPlatformFromURL( url: str ):
