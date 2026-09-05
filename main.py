@@ -1,18 +1,24 @@
 from fastapi import FastAPI, HTTPException, Request
 import requests
-from src.utils import getRecommendedHeaders, pickProxy
+from src.utils import getRecommendedHeaders, pickProxy, authUser
 from src.downloader import extractVideoURL
 
 app = FastAPI()
 
 @app.get("/extract")
 def extractURL(url: str, request: Request):
+    if not authUser(request):
+        return {"status": False, "error": "Unauthorized client"}
     try:
         info = extractVideoURL( url, request )
-        return {"status": "success", "info": info}
+        if "description" in info:
+            del info["description"]
+        if "channel" in info:
+            del info["channel"]
+        return {"status": True, "info": info}
     except Exception as e:
-        error_msg = str(e) or repr(e) or traceback.format_exc()
-        raise HTTPException(status_code=400, detail=error_msg)
+        error_msg = str(e) or repr(e)
+        return {"status": False, "error": error_msg}
 
 @app.get("/test")
 def test(url: str, request: Request):

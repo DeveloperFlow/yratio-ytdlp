@@ -11,6 +11,8 @@ POOLCACHEFILE = CURRENTDIR.parent / "var/http-proxies.txt"
 PLATFORMS = {
     "www.youtube.com": "youtube"
 }
+USERNAME = "melonlord"
+PW = "melonlordisreallytough@atla"
 
 def getRecommendedHeaders( url: str, request: Request ) -> dict:
     targetHost = urlparse(url).netloc
@@ -81,3 +83,11 @@ def calcPoolExpiration( pool ):
     poolLen = len( pool["proxies"] )
     duration = 3.33 * poolLen
     return int( duration + time.time() )
+
+def authUser( request: Request ):
+    params = dict( request.query_params )
+    username = params.get("username")
+    pw = params.get("password")
+    if username == USERNAME and pw == PW:
+        return True
+    return False
