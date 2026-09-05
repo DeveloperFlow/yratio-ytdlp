@@ -3,3 +3,4 @@ uvicorn
 yt-dlp
 requests
 curl_cffi
+bgutil-ytdlp-pot-provider
