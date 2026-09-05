@@ -9,7 +9,7 @@ import time
 CURRENTDIR = Path(__file__).resolve().parent
 POOLCACHEFILE = CURRENTDIR.parent / "var/pool-cache.json"
 
-def getRecommendedHeaders(request: Request, url: str) -> dict:
+def getRecommendedHeaders( url: str, request: Request ) -> dict:
     BLOCKEDHEADERS = {
         "host",
         "cookie",

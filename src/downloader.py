@@ -1,8 +1,9 @@
 import yt_dlp
+from fastapi import Request
 from src.utils import pickProxy, getRecommendedHeaders
 
-def extractVideoURL( url: str ):
-    headers = getRecommendedHeaders()
+def extractVideoURL( url: str, request: Request):
+    headers = getRecommendedHeaders(url, request)
     options = {
         'http_headers': headers,
         'extract_flat': True,

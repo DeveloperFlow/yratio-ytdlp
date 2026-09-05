@@ -16,9 +16,9 @@ def extractURL(url: str, request: Request):
 
 @app.get("/test")
 def test(url: str, request: Request):
-    Headers = getRecommendedHeaders( request, url )
+    Headers = getRecommendedHeaders( url, request )
     try:
-        response = requests.get(url, headers=HEADERS, timeout=10)
+        response = requests.get(url, headers=Headers, timeout=10)
         return {
             "status_code": response.status_code,
             "request_headers": Headers,
