@@ -20,6 +20,7 @@ def test(url: str, request: Request):
     try:
         response = requests.get(url, headers=Headers, timeout=10)
         return {
+            "url": url,
             "status_code": response.status_code,
             "request_headers": Headers,
             "headers": dict(response.headers),
