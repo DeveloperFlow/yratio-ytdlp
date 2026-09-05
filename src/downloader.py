@@ -15,6 +15,7 @@ def extractVideoURL( url: str, request: Request):
                 'player_client': ['mweb', 'android', 'web']
             }
         },
+        "socket_timeout": 120,
         'skip_download': True
     }
     proxy = pickProxy()
