@@ -7,14 +7,11 @@ def extractVideoURL( url: str, request: Request):
     options = {
         'http_headers': headers,
         'extract_flat': True,
-        """'extractor_args': {
-            'instagram': {
-                'embed': ['true']
-            },
-            'youtube': {
-                'player_client': ['mweb', 'android', 'web']
+        'extractor_args': {
+            'youtubepot-bgutilhttp': {
+                'base_url': 'https://bgutil-usnk.onrender.com'
             }
-        },"""
+        },
         'skip_download': True
     }
     proxy = pickProxy()
