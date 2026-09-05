@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 import requests
-from src.utils import getRecommendedHeaders
+from src.utils import getRecommendedHeaders, pickAProxy
 from src.downloader import extractVideoURL
 
 app = FastAPI()
@@ -18,8 +18,14 @@ def extractURL(url: str, request: Request):
 def test(url: str, request: Request):
     Headers = getRecommendedHeaders( url, request )
     try:
-        response = requests.get(url, headers=Headers, timeout=10)
+        proxy = pickAProxy()
+        proxies = {
+            "https": proxy,
+            "http": proxy
+        }
+        response = requests.get(url, headers=Headers, timeout=10, proxies=proxies)
         return {
+            "proxy": proxy,
             "url": url,
             "status_code": response.status_code,
             "request_headers": Headers,
