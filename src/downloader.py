@@ -14,5 +14,5 @@ def extractVideoURL( url: str, request: Request):
         },
         'skip_download': True
     }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    with yt_dlp.YoutubeDL(options) as ydl:
         return {"resp": ydl.extract_info(url, download=False), "proxy": pickProxy()}

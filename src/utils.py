@@ -10,24 +10,33 @@ CURRENTDIR = Path(__file__).resolve().parent
 POOLCACHEFILE = CURRENTDIR.parent / "var/pool-cache.json"
 
 def getRecommendedHeaders( url: str, request: Request ) -> dict:
-    BLOCKEDHEADERS = {
-        "host",
-        "cookie",
-        "content-length",
-        "content-type",
-        "connection",
-        "x-forwarded-host",
-        "cf-connecting-ip",
-        "cf-ray",
-        "accept-encoding"
-    }
-    forwarded = {}
-    for key, value in request.headers.items():
-        if key.lower() not in BLOCKEDHEADERS:
-            forwarded[key] = value
     targetHost = urlparse(url).netloc
-    forwarded["Host"] = targetHost
-    return forwarded
+    referer = request.headers.get("referer")
+    clientIP = request.headers.get("true-client-ip")
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Authorization": "",
+        "Host": targetHost,
+        "Sec-Ch-Ua": '"Chromium";v="152", "Not?A_Brand";v="24", "Google Chrome";v="152"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+        "X-Forwarded-Proto": "https"
+    }
+    if referer:
+        headers["Referer"] = referer
+    if clientIP: 
+        headers["X-Real-Ip"] = clientIP
+        headers["X-Forwarded-For"] = clientIP
+    return dict( sorted( headers.items() ) )
+    
 
 #proxy fetching functions
 def getFreshProxyPool() -> dict:
