@@ -7,7 +7,7 @@ import json
 import time
 
 CURRENTDIR = Path(__file__).resolve().parent
-POOLCACHEFILE = CURRENTDIR.parent / "var/pool-cache.json"
+POOLCACHEFILE = CURRENTDIR.parent / "var/proxies.txt"
 
 def getRecommendedHeaders( url: str, request: Request ) -> dict:
     targetHost = urlparse(url).netloc
@@ -41,67 +41,23 @@ def getRecommendedHeaders( url: str, request: Request ) -> dict:
     return dict( sorted( headers.items() ) )
     
 
-#proxy fetching functions
-def getFreshProxyPool() -> dict:
-    ep = "https://api.proxyscrape.com/v4/free-proxy-list/get?request=display_proxies&proxy_format=protocolipport&format=json"
-    proxies = dict()
-    try:
-        response = requests.get(ep)
-        proxiesData = response.json()
-        if isinstance( proxiesData, dict ):
-            proxies = proxiesData
-    except Exception as e:
-        pass
-    return proxies
-
-def getCachedProxyPool():
-    pool = 0
+def getProxyList():
+    proxies = list()
     if POOLCACHEFILE.is_file():
         try:
             with open(POOLCACHEFILE, "r", encoding = "utf-8") as file:
-                pool = json.load(file)
-                if isinstance( pool, dict):
-                    return pool
+                for line in file:
+                    cleanLine = line.rstrip("\n")
+                    proxies.append(cleanLine)
         except Exception as e:
             pass
-    return None
-
-def refreshProxyPoolCache():
-    pool = getFreshProxyPool()
-    if "proxies" in pool and isinstance( pool["proxies"], list ):
-        with open( POOLCACHEFILE, "w") as file:
-            expiration = calcPoolExpiration( pool )
-            poolCache = {"expiration": expiration, "pool": pool}
-            json.dump( poolCache, file, indent = 4 )
-            return poolCache
-    return None
-
-def getProxyPool():
-    pool = refreshProxyPoolCache()
-    if pool:
-        expiration = pool["expiration"]
-        if time.time() > expiration:
-            pool = refreshProxyPoolCache()
-    else:
-        pool = refreshProxyPoolCache()
-    return pool
-
-def getProxyList() -> list:
-    pool = getProxyPool()
-    proxies = list()
-    if isinstance(pool, dict) and "pool" in pool:
-        pool = pool["pool"]
-        if "proxies" in pool and isinstance( pool["proxies"], list):
-            for proxy in pool["proxies"]:
-                proxies.append( proxy.get("proxy") )
     return proxies
 
 def pickProxy():
-    return "http://tvz9kjec2y2m:i73lfsjaxxgo6fl@45.3.53.7:3129"
-    """pool = getProxyList()
+    pool = getProxyList()
     if len( pool ) > 0:
         return random.choice( pool )
-    return None"""
+    return None
 
 def calcPoolExpiration( pool ):
     poolLen = len( pool["proxies"] )
