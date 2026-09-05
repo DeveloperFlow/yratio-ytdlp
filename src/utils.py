@@ -77,7 +77,7 @@ def refreshProxyPoolCache():
     return None
 
 def getProxyPool():
-    pool = getCachedProxyPool()
+    pool = refreshProxyPoolCache()
     if pool:
         expiration = pool["expiration"]
         if time.time() > expiration:
