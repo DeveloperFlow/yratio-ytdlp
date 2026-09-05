@@ -7,7 +7,7 @@ import json
 import time
 
 CURRENTDIR = Path(__file__).resolve().parent
-POOLCACHEFILE = CURRENTDIR.parent / "var/proxies.txt"
+POOLCACHEFILE = CURRENTDIR.parent / "var/http-proxies.txt"
 
 def getRecommendedHeaders( url: str, request: Request ) -> dict:
     targetHost = urlparse(url).netloc
@@ -56,7 +56,7 @@ def getProxyList():
 def pickProxy():
     pool = getProxyList()
     if len( pool ) > 0:
-        return random.choice( pool )
+        return "http://" + random.choice( pool )
     return None
 
 def calcPoolExpiration( pool ):
